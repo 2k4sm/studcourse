@@ -3,49 +3,58 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Course Management</title>
+    <title>Courses</title>
     <link rel="stylesheet" href="<c:url value='/style.css'/>">
 </head>
 <body>
     <div class="container">
         <h2>Course Directory</h2>
+        <a href="<c:url value='/courses/add'/>" class="btn">Add New Course</a>
 
-        <a href="<c:url value='/courses/add'/>" class="btn mb-20">+ Add New Course</a>
-
-        <div class="table-container">
-            <table>
-                <thead>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Enrolled Students</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="course" items="${courses}">
                     <tr>
-                        <th>ID</th>
-                        <th>Course Title</th>
-                        <th>Description</th>
-                        <th>Enrolled Students</th>
+                        <td>${course.id}</td>
+                        <td>${course.title}</td>
+                        <td>${course.description}</td>
+                        <td>${course.students.size()}</td>
+                        <td>
+                            <button onclick="deleteCourse(${course.id})" class="btn btn-danger">Delete</button>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="course" items="${courses}">
-                        <tr>
-                            <td>${course.id}</td>
-                            <td>
-                                <strong>${course.title}</strong>
-                            </td>
-                            <td>
-                                <div class="course-description">
-                                    ${course.description}
-                                </div>
-                            </td>
-                            <td>
-                                <span class="student-count">
-                                    ${course.students.size()} students
-                                </span>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </div>
+                </c:forEach>
+            </tbody>
+        </table>
 
-        <a href="<c:url value='/'/>" class="btn btn-secondary mt-20">← Back to Home</a>
+        <a href="<c:url value='/'/>" class="btn btn-secondary">Back to Home</a>
     </div>
+
+    <script>
+    function deleteCourse(id) {
+        if (confirm('Are you sure you want to delete this course? All student enrollments will be removed.')) {
+            fetch(`/courses/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    return response.text().then(text => alert(text));
+                }
+            })
+            .catch(error => alert('Error: ' + error));
+        }
+    }
+    </script>
 </body>
 </html>

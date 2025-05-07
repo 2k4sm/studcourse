@@ -15,15 +15,6 @@
                 <li><a href="<c:url value='/courses'/>" class="btn">Manage Courses</a></li>
             </ul>
         </nav>
-
-        <div class="welcome-section">
-            <p>Welcome to the Student Course Management System. This platform allows you to:</p>
-            <ul>
-                <li>Manage student enrollments</li>
-                <li>Create and edit courses</li>
-                <li>Track student-course relationships</li>
-            </ul>
-        </div>
     </div>
 </body>
 </html>

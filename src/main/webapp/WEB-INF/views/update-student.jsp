@@ -9,36 +9,35 @@
 </head>
 <body>
     <div class="container">
-        <h2>Update Student Information</h2>
+        <h2>Update Student</h2>
+
         <form:form method="post" modelAttribute="student" action="${pageContext.request.contextPath}/students/update">
             <form:hidden path="id"/>
 
             <div class="form-group">
-                <label for="name">Full Name</label>
-                <form:input path="name" id="name" placeholder="Enter student's full name"/>
+                <label for="name">Name</label>
+                <form:input path="name" id="name" required="true"/>
             </div>
 
             <div class="form-group">
-                <label for="email">Email Address</label>
-                <form:input path="email" id="email" placeholder="Enter student's email"/>
+                <label for="email">Email</label>
+                <form:input path="email" id="email" type="email" required="true"/>
             </div>
 
             <div class="form-group">
-                <label>Enrolled Courses</label>
-                <div class="select-courses">
+                <label>Courses</label>
+                <div class="course-selection">
                     <c:forEach items="${courses}" var="course">
-                        <label>
-                            <form:checkbox path="courses" value="${course.id}"/>
-                            ${course.title}
-                        </label>
+                        <div class="course-checkbox">
+                            <form:checkbox path="courses" value="${course.id}" id="course${course.id}"/>
+                            <label for="course${course.id}">${course.title}</label>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
 
-            <div class="form-group">
-                <button type="submit" class="btn">Update Student</button>
-                <a href="<c:url value='/students'/>" class="btn btn-secondary">Cancel</a>
-            </div>
+            <button type="submit" class="btn">Update Student</button>
+            <a href="<c:url value='/students'/>" class="btn btn-secondary">Cancel</a>
         </form:form>
     </div>
 </body>

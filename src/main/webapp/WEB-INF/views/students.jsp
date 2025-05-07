@@ -9,8 +9,7 @@
 <body>
     <div class="container">
         <h2>Student Directory</h2>
-
-        <a href="<c:url value='/students/add'/>" class="btn mb-20">+ Add New Student</a>
+        <a href="<c:url value='/students/add'/>" class="btn">Add New Student</a>
 
         <table>
             <thead>
@@ -18,28 +17,49 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Enrolled Courses</th>
+                    <th>Courses</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="stu" items="${students}">
+                <c:forEach var="student" items="${students}">
                     <tr>
-                        <td>${stu.id}</td>
-                        <td>${stu.name}</td>
-                        <td>${stu.email}</td>
+                        <td>${student.id}</td>
+                        <td>${student.name}</td>
+                        <td>${student.email}</td>
                         <td>
-                            <c:forEach var="c" items="${stu.courses}" varStatus="status">
-                                ${c.title}${!status.last ? ', ' : ''}
+                            <c:forEach var="course" items="${student.courses}" varStatus="status">
+                                ${course.title}${!status.last ? ', ' : ''}
                             </c:forEach>
                         </td>
-                        <td><a href="<c:url value='/students/edit/${stu.id}'/>" class="btn">Edit</a></td>
+                        <td>
+                            <a href="<c:url value='/students/edit/${student.id}'/>" class="btn">Edit</a>
+                            <button onclick="deleteStudent(${student.id})" class="btn btn-danger">Delete</button>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
 
-        <a href="<c:url value='/'/>" class="btn btn-secondary mt-20">← Back to Home</a>
+        <a href="<c:url value='/'/>" class="btn btn-secondary">Back to Home</a>
     </div>
+
+    <script>
+    function deleteStudent(id) {
+        if (confirm('Are you sure you want to delete this student?')) {
+            fetch(`/students/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    return response.text().then(text => alert(text));
+                }
+            })
+            .catch(error => alert('Error: ' + error));
+        }
+    }
+    </script>
 </body>
 </html>

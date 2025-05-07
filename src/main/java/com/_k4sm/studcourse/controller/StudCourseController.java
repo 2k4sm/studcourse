@@ -4,14 +4,13 @@ import com._k4sm.studcourse.entity.Student;
 import com._k4sm.studcourse.entity.Course;
 import com._k4sm.studcourse.service.StudentService;
 import com._k4sm.studcourse.service.CourseService;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class StudCourseController {
-
     private final StudentService studentService;
     private final CourseService courseService;
 
@@ -25,7 +24,7 @@ public class StudCourseController {
         return "home";
     }
 
-    // Students
+    // Students endpoints
     @GetMapping("/students")
     public String listStudents(Model model) {
         model.addAttribute("students", studentService.getAllStudents());
@@ -47,7 +46,8 @@ public class StudCourseController {
 
     @GetMapping("/students/edit/{id}")
     public String editStudent(@PathVariable Long id, Model model) {
-        Student student = studentService.getStudentById(id).orElseThrow();
+        Student student = studentService.getStudentById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
         model.addAttribute("student", student);
         model.addAttribute("courses", courseService.getAllCourses());
         return "update-student";
@@ -59,7 +59,22 @@ public class StudCourseController {
         return "redirect:/students";
     }
 
-    // Courses
+    @DeleteMapping("/students/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deleteStudent(@PathVariable Long id) {
+        try {
+            if (studentService.canDeleteStudent(id)) {
+                studentService.deleteStudent(id);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.badRequest()
+                    .body("Cannot delete student who is enrolled in courses");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Courses endpoints
     @GetMapping("/courses")
     public String listCourses(Model model) {
         model.addAttribute("courses", courseService.getAllCourses());
@@ -76,5 +91,16 @@ public class StudCourseController {
     public String saveCourse(@ModelAttribute Course course) {
         courseService.saveCourse(course);
         return "redirect:/courses";
+    }
+
+    @DeleteMapping("/courses/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
+        try {
+            courseService.deleteCourse(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
