@@ -2,17 +2,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Home</title>
-  <link rel="stylesheet" href="<c:url value='/static/style.css'/>">
+    <meta charset="UTF-8">
+    <title>Student Course Management</title>
+    <link rel="stylesheet" href="<c:url value='/style.css'/>">
 </head>
-<body class="container">
-  <h1>Student‑Course Management</h1>
-  <nav>
-    <ul>
-      <li><a href="<c:url value='/students'/>">Manage Students</a></li>
-      <li><a href="<c:url value='/courses'/>">Manage Courses</a></li>
-    </ul>
-  </nav>
+<body>
+    <div class="container">
+        <h1>Student Course Management</h1>
+        <nav>
+            <ul>
+                <li><a href="<c:url value='/students'/>" class="btn">Manage Students</a></li>
+                <li><a href="<c:url value='/courses'/>" class="btn">Manage Courses</a></li>
+            </ul>
+        </nav>
+
+        <div class="welcome-section">
+            <p>Welcome to the Student Course Management System. This platform allows you to:</p>
+            <ul>
+                <li>Manage student enrollments</li>
+                <li>Create and edit courses</li>
+                <li>Track student-course relationships</li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
