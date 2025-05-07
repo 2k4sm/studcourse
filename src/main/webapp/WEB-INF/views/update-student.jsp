@@ -25,7 +25,7 @@
             </div>
 
             <div class="form-group">
-                <label>Courses</label>
+                <label>Enrolled Courses</label>
                 <div class="course-selection">
                     <c:forEach items="${courses}" var="course">
                         <div class="course-checkbox">

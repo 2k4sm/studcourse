@@ -32,7 +32,7 @@ public class CourseService {
         Course course = courseRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
-        // Remove this course from all enrolled students
+        // Remove this course from all students
         course.getStudents().forEach(student -> student.getCourses().remove(course));
 
         courseRepo.delete(course);

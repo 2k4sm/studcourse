@@ -24,7 +24,6 @@ public class StudCourseController {
         return "home";
     }
 
-    // Students endpoints
     @GetMapping("/students")
     public String listStudents(Model model) {
         model.addAttribute("students", studentService.getAllStudents());
@@ -59,22 +58,6 @@ public class StudCourseController {
         return "redirect:/students";
     }
 
-    @DeleteMapping("/students/{id}")
-    @ResponseBody
-    public ResponseEntity<?> deleteStudent(@PathVariable Long id) {
-        try {
-            if (studentService.canDeleteStudent(id)) {
-                studentService.deleteStudent(id);
-                return ResponseEntity.ok().build();
-            }
-            return ResponseEntity.badRequest()
-                    .body("Cannot delete student who is enrolled in courses");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    // Courses endpoints
     @GetMapping("/courses")
     public String listCourses(Model model) {
         model.addAttribute("courses", courseService.getAllCourses());
@@ -91,6 +74,21 @@ public class StudCourseController {
     public String saveCourse(@ModelAttribute Course course) {
         courseService.saveCourse(course);
         return "redirect:/courses";
+    }
+
+    @DeleteMapping("/students/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deleteStudent(@PathVariable Long id) {
+        try {
+            if (studentService.canDeleteStudent(id)) {
+                studentService.deleteStudent(id);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.badRequest()
+                    .body("Cannot delete student who is enrolled in courses");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/courses/{id}")

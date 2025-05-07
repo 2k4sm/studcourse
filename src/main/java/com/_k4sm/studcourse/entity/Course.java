@@ -14,7 +14,6 @@ public class Course {
     @ManyToMany(mappedBy = "courses")
     private Set<Student> students = new HashSet<>();
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

@@ -27,7 +27,9 @@
                         <td>${course.id}</td>
                         <td>${course.title}</td>
                         <td>${course.description}</td>
-                        <td>${course.students.size()}</td>
+                        <td>
+                            <span class="course-tag">${course.students.size()} students</span>
+                        </td>
                         <td>
                             <button onclick="deleteCourse(${course.id})" class="btn btn-danger">Delete</button>
                         </td>
@@ -42,14 +44,14 @@
     <script>
     function deleteCourse(id) {
         if (confirm('Are you sure you want to delete this course? All student enrollments will be removed.')) {
-            fetch(`/courses/${id}`, {
+            fetch(`${pageContext.request.contextPath}/courses/${id}`, {
                 method: 'DELETE'
             })
             .then(response => {
                 if (response.ok) {
                     window.location.reload();
                 } else {
-                    return response.text().then(text => alert(text));
+                    return response.text().then(text => alert(text || 'Error deleting course'));
                 }
             })
             .catch(error => alert('Error: ' + error));

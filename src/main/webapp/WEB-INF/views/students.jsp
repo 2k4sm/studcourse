@@ -29,7 +29,7 @@
                         <td>${student.email}</td>
                         <td>
                             <c:forEach var="course" items="${student.courses}" varStatus="status">
-                                ${course.title}${!status.last ? ', ' : ''}
+                                <span class="course-tag">${course.title}</span>
                             </c:forEach>
                         </td>
                         <td>
@@ -47,14 +47,15 @@
     <script>
     function deleteStudent(id) {
         if (confirm('Are you sure you want to delete this student?')) {
-            fetch(`/students/${id}`, {
+            fetch(`${pageContext.request.contextPath}/students/${id}`, {
                 method: 'DELETE'
             })
             .then(response => {
                 if (response.ok) {
                     window.location.reload();
                 } else {
-                    return response.text().then(text => alert(text));
+                    return response.text().then(text =>
+                        alert(text || 'Cannot delete student who is enrolled in courses'));
                 }
             })
             .catch(error => alert('Error: ' + error));
